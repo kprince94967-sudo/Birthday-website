@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday | Special Edition 2026</title>
+    
+    <!-- Fonts: Space Grotesk (Modern UI) & Playfair Display (Emotional/Editorial) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- 1. CORE VARIABLES & RESET --- */
+        :root {
+            --bg-color: #050505;
+            --text-main: #f0f0f0;
+            --text-muted: #888888;
+            --accent-glow: #7000ff;
+            --accent-secondary: #ff0055;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --font-display: 'Playfair Display', serif;
+            --font-ui: 'Space Grotesk', sans-serif;
+            --cursor-size: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* Custom cursor used */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-ui);
+            overflow-x: hidden;
+            width: 100%;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- 2. GLOBAL EFFECTS --- */
+        /* Film Grain Overlay */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0.05;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIiBvcGFjaXR5PSIxIi8+PC9zdmc+');
+        }
+
+        /* Custom Cursor */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 10000;
+            pointer-events: none;
+        }
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        /* Ambient Background blobs */
+        .ambient-light {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            filter: blur(100px);
+            opacity: 0.6;
+            overflow: hidden;
+        }
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+        .blob-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent-glow), transparent 70%);
+            top: -100px;
+            left: -100px;
+        }
+        .blob-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--accent-secondary), transparent 70%);
+            bottom: -100px;
+            right: -100px;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.1); }
+        }
+
+        /* --- 3. LAYOUT & TYPOGRAPHY --- */
+        section {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-display);
+            font-weight: 400;
+        }
+
+        p {
+            line-height: 1.6;
+            color: var(--text-muted);
+            max-width: 600px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        /* Fade Up Animation Class */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-on-scroll.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- 4. PRELOADER --- */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-color);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: opacity 1s ease;
+        }
+        .loader-text {
+            font-family: var(--font-ui);
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+        .progress-bar {
+            width: 200px;
+            height: 2px;
+            background: #222;
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background: white;
+            transition: width 0.5s ease;
+        }
+
+        /* --- 5. HERO SECTION --- */
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            line-height: 1;
+            text-align: center;
+            background: linear-gradient(to right, #fff, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        .hero .subtitle {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            font-style: italic;
+            opacity: 0.8;
+            margin-bottom: 3rem;
+        }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+        /* --- 6. MEMORY GRID (Bento Style) --- */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 40px;
+        }
+        .memory-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s ease;
+        }
+        .memory-card:hover {
+            transform: scale(1.02);
+            border-color: rgba(255,255,255,0.2);
+        }
+        .memory-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+        .memory-card:hover img {
+            transform: scale(1.1);
+        }
+        .memory-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+        .memory-card:hover .memory-text {
+            transform: translateY(0);
+        }
+
+        /* --- 7. INTERACTIVE WISH SECTION --- */
+        .cake-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 40px 0;
+            cursor: pointer;
+        }
+        /* CSS Candle */
+        .candle {
+            width: 16px;
+            height: 80px;
+            background: linear-gradient(#f0f0f0, #ccc);
+            position: absolute;
+            bottom: 0;
+            border-radius: 4px;
+        }
+        .flame {
+            width: 20px;
+            height: 30px;
+            background: orange;
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            top: -35px;
+            left: -2px;
+            box-shadow: 0 0 20px orange, 0 0 40px red;
+            animation: flicker 0.1s infinite alternate;
+            transform-origin: bottom center;
+            transition: opacity 0.5s ease;
+        }
+        @keyframes flicker {
+            0% { transform: scale(1); opacity: 0.9; }
+            100% { transform: scale(1.1) skewX(2deg); opacity: 1; }
+        }
+        .wish-btn {
+            margin-top: 30px;
+            padding: 15px 40px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            font-family: var(--font-ui);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .wish-btn:hover {
+            background: white;
+            color: black;
+            box-shadow: 0 0 30px rgba(255,255,255,0.4);
+        }
+        
+        /* Hidden Message */
+        .hidden-message {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 1s ease;
+            text-align: center;
+        }
+        .hidden-message.show {
+            max-height: 500px;
+            margin-top: 20px;
+        }
+
+        /* --- 8. FOOTER --- */
+        footer {
+            padding: 50px 0;
+            text-align: center;
+            font-size: 0.8rem;
+            opacity: 0.5;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        /* --- 9. CONFETTI CANVAS --- */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Noise & Background -->
+    <div class="noise-overlay"></div>
+    <div class="ambient-light">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <!-- Cursor -->
+    <div class="cursor-dot" data-cursor-dot></div>
+    <div class="cursor-outline" data-cursor-outline></div>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-text">Loading Experience...</div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </div>
+
+    <!-- Canvas for effects -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- CONTENT -->
+    <main>
+        
+        <!-- SECTION 1: HERO -->
+        <section class="hero">
+            <h1 class="reveal-on-scroll">Happy Birthday<br><!-- [EDIT] Name Here -->Sophia</h1>
+            <p class="subtitle reveal-on-scroll" style="transition-delay: 0.2s;">Welcome to your 2026 digital capsule.</p>
+            <div class="scroll-indicator">Scroll to Explore</div>
+        </section>
+
+        <!-- SECTION 2: THE LETTER -->
+        <section id="letter">
+            <h2 class="reveal-on-scroll">Another trip around the sun</h2>
+            <br>
+            <p class="reveal-on-scroll">
+                <!-- [EDIT] Emotional Message Here -->
+                They say time moves differently when you're watching the stars, but it moves even faster when you're watching someone shine. 
+                <br><br>
+                This isn't just a birthday wish. It's a reminder of how incredible you are, the light you bring into rooms you don't even know you're lighting up, and the chaotic, beautiful energy you bring to my life.
+            </p>
+        </section>
+
+        <!-- SECTION 3: MEMORY GRID -->
+        <section id="memories">
+            <h2 class="reveal-on-scroll" style="margin-bottom: 30px;">Captured Moments</h2>
+            <div class="memory-grid">
+                <!-- [EDIT] Images. Using Unsplash placeholders. Replace src with real image URLs -->
+                <div class="memory-card reveal-on-scroll" style="transition-delay: 0s;">
+                    <img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=600&q=80" alt="Memory 1">
+                    <div class="memory-text">Cinque Terre, 2024</div>
+                </div>
+                <div class="memory-card reveal-on-scroll" style="transition-delay: 0.1s;">
+                    <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80" alt="Memory 2">
+                    <div class="memory-text">That Night</div>
+                </div>
+                <div class="memory-card reveal-on-scroll" style="transition-delay: 0.2s;">
+                    <img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=600&q=80" alt="Memory 3">
+                    <div class="memory-text">Pure Joy</div>
+                </div>
+                <div class="memory-card reveal-on-scroll" style="transition-delay: 0.3s;">
+                    <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=600&q=80" alt="Memory 4">
+                    <div class="memory-text">2026 & Beyond</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: THE INTERACTIVE WISH -->
+        <section id="wish-section">
+            <h2 class="reveal-on-scroll">Make a Wish</h2>
+            <p class="reveal-on-scroll">Close your eyes. Think of something beautiful. <br>Click and hold the button below to blow out the candle.</p>
+            
+            <div class="cake-container reveal-on-scroll">
+                <div class="candle">
+                    <div class="flame" id="flame"></div>
+                </div>
+            </div>
+
+            <button class="wish-btn reveal-on-scroll" id="wish-btn">Blow Candle</button>
+
+            <div class="hidden-message" id="final-message">
+                <h3>It's done.</h3>
+                <p>May the universe conspire to make it happen.<br>Happy Birthday, my favorite human.</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>Designed with ❤️ for You. &copy; 2026</p>
+        </footer>
+
+    </main>
+
+    <script>
+        // --- 1. CUSTOM CURSOR LOGIC ---
+        const cursorDot = document.querySelector('[data-cursor-dot]');
+        const cursorOutline = document.querySelector('[data-cursor-outline]');
+
+        window.addEventListener("mousemove", function (e) {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            // smooth lag for outline
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Hover states for cursor
+        document.querySelectorAll('a, button, .memory-card').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorOutline.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                cursorOutline.style.backgroundColor = 'rgba(255,255,255,0.1)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursorOutline.style.backgroundColor = 'transparent';
+            });
+        });
+
+        // --- 2. PRELOADER LOGIC ---
+        window.addEventListener('load', () => {
+            const fill = document.getElementById('progress-fill');
+            const preloader = document.getElementById('preloader');
+            
+            // Simulate loading
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        preloader.style.opacity = '0';
+                        setTimeout(() => {
+                            preloader.style.display = 'none';
+                            // Trigger initial scroll reveal check
+                            checkScroll(); 
+                        }, 1000);
+                    }, 500);
+                } else {
+                    width += Math.random() * 10;
+                    if(width > 100) width = 100;
+                    fill.style.width = width + '%';
+                }
+            }, 100);
+        });
+
+        // --- 3. SCROLL REVEAL ANIMATION ---
+        const revealElements = document.querySelectorAll('.reveal-on-scroll');
+
+        function checkScroll() {
+            const triggerBottom = window.innerHeight * 0.85;
+            
+            revealElements.forEach(box => {
+                const boxTop = box.getBoundingClientRect().top;
+                
+                if(boxTop < triggerBottom) {
+                    box.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', checkScroll);
+
+        // --- 4. INTERACTIVE WISH & CONFETTI ---
+        const wishBtn = document.getElementById('wish-btn');
+        const flame = document.getElementById('flame');
+        const finalMessage = document.getElementById('final-message');
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particles = [];
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.velocity = {
+                    x: (Math.random() - 0.5) * 8,
+                    y: (Math.random() - 0.5) * 8
+                };
+                this.radius = Math.random() * 5;
+                this.friction = 0.95; // slows down
+                this.gravity = 0.05; // falls down
+                this.alpha = 1;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.restore();
+            }
+
+            update() {
+                this.velocity.x *= this.friction;
+                this.velocity.y *= this.friction;
+                this.velocity.y += this.gravity;
+                this.x += this.velocity.x;
+                this.y += this.velocity.y;
+                this.alpha -= 0.005;
+                this.draw();
+            }
+        }
+
+        function createConfetti() {
+            const colors = ['#ff0055', '#7000ff', '#00ddff', '#ffffff'];
+            // burst from center
+            for (let i = 0; i < 400; i++) {
+                const x = canvas.width / 2;
+                const y = canvas.height / 2;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particles.push(new Particle(x, y, color));
+            }
+        }
+
+        function animateConfetti() {
+            requestAnimationFrame(animateConfetti);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((particle, index) => {
+                if (particle.alpha > 0) {
+                    particle.update();
+                } else {
+                    particles.splice(index, 1);
+                }
+            });
+        }
+
+        // Interaction Event
+        wishBtn.addEventListener('mousedown', () => {
+            // Button visual press
+            wishBtn.style.transform = "scale(0.95)";
+        });
+
+        wishBtn.addEventListener('mouseup', () => {
+            wishBtn.style.transform = "scale(1)";
+            
+            // 1. Extinguish flame
+            flame.style.opacity = '0';
+            
+            // 2. Hide Button
+            wishBtn.style.display = 'none';
+
+            // 3. Show Message
+            setTimeout(() => {
+                finalMessage.classList.add('show');
+            }, 500);
+
+            // 4. Trigger Confetti
+            createConfetti();
+            animateConfetti();
+        });
+        
+        // Resize listener for canvas
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+    </script>
+</body>
+</html>
